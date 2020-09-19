@@ -1,0 +1,78 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Check if username exists with AngularJS</title>
+
+        <link href="style.css" rel="stylesheet" type="text/css">
+
+    </head>
+    <body ng-app='myapp'>
+
+
+        <div class="container" ng-controller='signup'>
+
+
+            <br><br>
+            <div id="div_reg">
+
+                Exist username - <b>yssyogesh, bsonarika, vishal,  sunil, vijay, anil, and jiten.</b>
+                <h1>Registration</h1>
+
+                <div>
+                    <input type="text" class="textbox" id="txt_name" ng-model="name"  placeholder="Name"/>
+                </div>
+
+                <!-- Username -->
+                <div>
+                    <input type="text" class="textbox" id="txt_uname" ng-model="username" ng-keyup='checkUsername()' placeholder="Username"  />
+                    <div ng-class="addClass(unamestatus)" >{{ unamestatus }}</div>
+                </div>
+
+                <div>
+                    <input type="password" class="textbox" id="txt_pwd" ng-model="password" placeholder="Password"/>
+                </div>
+
+                <div>
+                    <input type="submit" value="Submit" name="but_submit" id="but_submit" />
+                </div>
+
+            </div>
+
+        </div>
+        
+        <!-- Script -->
+        <script src='angular.min.js'></script>
+        <script>
+        var fetch = angular.module('myapp', []);
+
+        fetch.controller('signup', ['$scope', '$http', function ($scope, $http) {
+                    
+            // Check username 
+            $scope.checkUsername = function(){
+              
+                $http({
+                    method: 'post',
+                    url: 'uname_check.php',
+                    data: {username:$scope.username}
+                }).then(function successCallback(response) {
+                    $scope.unamestatus = response.data;
+                });
+            }
+
+            // Set class
+            $scope.addClass = function(unamestatus){
+                if(unamestatus == 'Available'){
+                    return 'response exists';
+                }else if(unamestatus == 'Not available'){
+                    return 'response not-exists';
+                }else{
+                    return 'hide';
+                }
+            }
+
+            
+        }]);
+        </script>
+        
+    </body>
+</html>
